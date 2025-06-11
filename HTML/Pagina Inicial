@@ -1,1 +1,15 @@
-
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>PICA PARK</title>
+  <link rel="stylesheet" href="css.css">
+</head>
+<body>
+  <div class="div">
+    <h1>PICA PARK</h1>
+    <input type="text" placeholder="Digite seu nome">
+    <button>CONFIRMAR</button>
+  </div>
+</body>
+</html>
