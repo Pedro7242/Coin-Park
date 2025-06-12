@@ -1,32 +1,35 @@
 body{
     background-color: aquamarine;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 div.plataforma{
     position:relative;
-    left:880px;
+    left:870px;
     height: 60px;
-    width:470px;
+    width:500px;
     background-color: blueviolet;
-    top:270px;
+    top:172px;
     border-radius: 10px;
 }
 div.plataforma2{
     position:relative;
-    right:100px;
+    right: 4px;
     height: 60px;
-    width:470px;
+    width: 500px;
     background-color: blueviolet;
-    top:270px;
+    top:230px;
     border-radius: 10px;
 }
 
 div.camada{
     margin: auto;
-    width: 100%;
+    width: 100vw;
     height: 60px;
     background-color:blueviolet;
     position: relative;
-    top: 530px;
+    top: 419px;
 }
 div.camada2{
     margin: auto;
@@ -34,7 +37,7 @@ div.camada2{
     height: 60px;
     background-color:blueviolet;
     position: relative;
-    top: 410px;
+    top: 300px;
 }
 div.camada3{
     margin: auto;
@@ -42,7 +45,7 @@ div.camada3{
     height: 60px;
     background-color:blueviolet;
     position: relative;
-    top: 290px;
+    top: 180px;
 }
 div.camada4{
     margin: auto;
@@ -50,5 +53,7 @@ div.camada4{
     height: 60px;
     background-color:blueviolet;
     position: relative;
-    top: 170px;
+    top: 60px;
 }
+
+
