@@ -1,59 +1,77 @@
 body{
-    background-color: aquamarine;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    background-color: aquamarine;
 }
+
+body, html {
+  overflow: hidden;
+  height: 100%;
+}
+
 div.plataforma{
     position:relative;
-    left:870px;
-    height: 60px;
-    width:500px;
+    left:990px;
+    height:60px;
+    width:550px;
     background-color: blueviolet;
-    top:172px;
+    top:262px;
     border-radius: 10px;
 }
 div.plataforma2{
     position:relative;
     right: 4px;
     height: 60px;
-    width: 500px;
+    width: 550px;
     background-color: blueviolet;
-    top:230px;
+    top:320px;
     border-radius: 10px;
 }
 
-div.camada{
+div.teto{
+    position: absolute;
+    margin: auto;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 70px;
+  background-color: blueviolet;
+}
+
+div.chao{
     margin: auto;
     width: 100vw;
-    height: 79px;
+    height: 70px;
     background-color:blueviolet;
     position: relative;
-    top: 530px;
+    top: 540px;
+}
+
+div.camada1{
+    margin: auto;
+    width: 30%;
+    height: 85px;
+    background-color:blueviolet;
+    position: relative;
+    top: 385px;
+    border-radius: 5px;
 }
 div.camada2{
     margin: auto;
-    width: 30%;
-    height: 60px;
+    width: 20%;
+    height: 85px;
     background-color:blueviolet;
     position: relative;
-    top: 391px;
+    top: 215px;
+    border-radius: 5px;
 }
 div.camada3{
     margin: auto;
-    width: 20%;
-    height: 60px;
-    background-color:blueviolet;
-    position: relative;
-    top: 271px;
-}
-div.camada4{
-    margin: auto;
     width: 10%;
-    height: 60px;
+    height: 85px;
     background-color:blueviolet;
     position: relative;
-    top: 152px;
+    top: 45px;
+    border-radius: 5px;
 }
-
-
