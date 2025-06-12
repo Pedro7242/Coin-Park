@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>PICA PARK</title>
-  <link rel="stylesheet" href="css.css">
+  <link rel="stylesheet" href="paginaInicial.css">
 </head>
 <body>
+  <script src="storage.js"></script>
   <div class="div">
     <h1>PICA PARK</h1>
-    <input type="text" placeholder="Digite seu nome">
-    <button>CONFIRMAR</button>
+    <input id="nick" placeholder="Digite seu nome">
+    <button onclick="iniciarJogo()">Jogar</button>
   </div>
 </body>
 </html>
