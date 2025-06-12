@@ -26,34 +26,34 @@ div.plataforma2{
 div.camada{
     margin: auto;
     width: 100vw;
-    height: 60px;
+    height: 79px;
     background-color:blueviolet;
     position: relative;
-    top: 419px;
+    top: 530px;
 }
 div.camada2{
-    margin: auto;
-    width: 45%;
-    height: 60px;
-    background-color:blueviolet;
-    position: relative;
-    top: 300px;
-}
-div.camada3{
     margin: auto;
     width: 30%;
     height: 60px;
     background-color:blueviolet;
     position: relative;
-    top: 180px;
+    top: 391px;
 }
-div.camada4{
+div.camada3{
     margin: auto;
-    width: 15%;
+    width: 20%;
     height: 60px;
     background-color:blueviolet;
     position: relative;
-    top: 60px;
+    top: 271px;
+}
+div.camada4{
+    margin: auto;
+    width: 10%;
+    height: 60px;
+    background-color:blueviolet;
+    position: relative;
+    top: 152px;
 }
 
 
