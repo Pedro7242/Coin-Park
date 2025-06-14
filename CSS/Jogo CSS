@@ -77,6 +77,10 @@ div.camada3{
     top: 45px;
     border-radius: 5px;
 }
+
+.porta{
+    
+}
 .moeda1{
     width: 60px;
     position:relative;
