@@ -15,6 +15,8 @@
     <div class="camada1"></div>
     <div class="camada2"></div>
     <div class="camada3"></div>
+        <img class="porta"
+src="porta.png">
         <img  class="moeda1" src="moeda.png">
         <img class="moeda2" src="moeda.png">
         <img  class="moeda3" src="moeda.png">
