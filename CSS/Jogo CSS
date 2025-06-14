@@ -75,3 +75,62 @@ div.camada3{
     top: 45px;
     border-radius: 5px;
 }
+.moeda1{
+    width: 60px;
+    position:relative;
+    top:100px;
+}
+.moeda2{
+    width: 60px;
+    position: relative;
+    top: 100px;
+    left: 100px;
+}
+.moeda3{
+    width: 60px;
+    position: relative;
+    top: 100px;
+    left: 200px;
+}
+.moeda4{
+    width: 60px;
+    position: relative;
+    top: 75px;
+    left: 345px;
+}
+.moeda5{
+    width: 60px;
+    position: relative;
+    top: -10px;;
+    left: 360px;
+}
+.moeda6{
+    width: 60px;
+    position: relative;
+    top: -10px;;
+    left: 520px;
+}
+.moeda7{
+    width: 60px;
+    position: relative;
+    top: 75px;
+    left: 530px;
+}
+.moeda8{
+    width: 60px;
+    position: relative;
+    top: 100px;
+    left: 600px;
+}
+.moeda9{
+    width: 60px;
+    position: relative;
+    top: 100px;
+    left: 700px;
+}
+.moeda10{
+    width: 60px;
+    position: relative;
+    top: 100px;
+    left: 800px;
+}
