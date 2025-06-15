@@ -5,27 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="css.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 </head>
 <body>
     <script src="telas.js"></script>
-    <div class="plataforma2"></div>
-    <div class="plataforma"></div>
+    <div class="fixa">
     <div class="teto"></div>
     <div class="chao"></div>
+    <div class="plataforma"></div>
+    <div class="plataforma2"></div>
     <div class="camada1"></div>
     <div class="camada2"></div>
     <div class="camada3"></div>
-        <img class="porta"
-src="porta.png">
-        <img  class="moeda1" src="moeda.png">
-        <img class="moeda2" src="moeda.png">
-        <img  class="moeda3" src="moeda.png">
-        <img class="moeda4" src="moeda.png">
-        <img  class="moeda5" src="moeda.png">
-        <img class="moeda6" src="moeda.png">
-        <img class="moeda7" src="moeda.png">
-        <img class="moeda8" src="moeda.png">
-        <img class="moeda9" src="moeda.png">
-        <img class="moeda10" src="moeda.png">
+    <img  class="moeda1" src="moeda.png">
+    <img class="moeda2" src="moeda.png">
+    <img  class="moeda3" src="moeda.png">
+    <img class="moeda4" src="moeda.png">
+    <img  class="moeda5" src="moeda.png">
+    <img class="moeda6" src="moeda.png">
+    <img class="moeda7" src="moeda.png">
+    <img class="moeda8" src="moeda.png">
+    <img class="moeda9" src="moeda.png">
+    <img class="moeda10" src="moeda.png">
+    <img class="moeda11" src="moeda.png">
+    <img class="moeda12" src="moeda.png">
+    <img class="moeda13" src="moeda.png">
+    <img class="moeda14" src="moeda.png">
+    <img class="moeda15" src="moeda.png">
+    <img class="moeda16" src="moeda.png">
+    <img class="porta" src="porta.png">
+    </div>
 </body>
 </html>
