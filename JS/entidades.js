@@ -41,3 +41,14 @@ class Porta {
     }
   }
 }
+class Piso {
+  constructor(elemento) {
+    this.el = elemento;
+  }
+
+  colideCom(jogador) {
+    const r1 = this.el.getBoundingClientRect();
+    const r2 = jogador.el.getBoundingClientRect();
+    return !(r1.right < r2.left || r1.left > r2.right || r1.bottom < r2.top || r1.top > r2.bottom);
+  }
+}
