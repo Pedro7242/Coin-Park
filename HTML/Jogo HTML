@@ -33,7 +33,7 @@
     <img class="moeda moeda14" src="moeda.png">
     <img class="moeda moeda15" src="moeda.png">
     <img class="moeda moeda16" src="moeda.png">
-    <img class="porta" src="porta.png">
+    <img class="porta" class = "trancada" src="porta.png">
     </div>
 </body>
 </html>
