@@ -1,4 +1,3 @@
-
 class Moeda {
   constructor(elementoHtml) {
     this.elemento = elementoHtml;
@@ -15,8 +14,11 @@ class Moeda {
       retJogador.bottom > retMoeda.top;
 
     if (colidiu) {
-      this.elemento.remove(); // Remove a moeda da tela
+      this.elemento.remove();
+      return true; // Moeda foi coletada
     }
+
+    return false; // Não houve colisão
   }
 }
 
@@ -31,16 +33,25 @@ class Porta {
     this.el.classList.remove('trancada');
   }
 
-  checarEntrada(jogador, moedas) {
+  checarEntrada(jogador) {
     if (!this.ativa) return;
+
     const r1 = this.el.getBoundingClientRect();
     const r2 = jogador.el.getBoundingClientRect();
-    const encostou = !(r1.right < r2.left || r1.left > r2.right || r1.bottom < r2.top || r1.top > r2.bottom);
+
+    const encostou = !(
+      r1.right < r2.left ||
+      r1.left > r2.right ||
+      r1.bottom < r2.top ||
+      r1.top > r2.bottom
+    );
+
     if (encostou) {
-      mostrarTelaFinal();
+      mostrarTelaFinal(); // Exibe resultado ou ranking
     }
   }
 }
+
 class Piso {
   constructor(elemento) {
     this.el = elemento;
@@ -48,7 +59,13 @@ class Piso {
 
   colideCom(jogador) {
     const r1 = this.el.getBoundingClientRect();
-    const r2 = jogador.el.getBoundingClientRect();
-    return !(r1.right < r2.left || r1.left > r2.right || r1.bottom < r2.top || r1.top > r2.bottom);
+    const r2 = jogador.getBoundingClientRect();
+
+    return !(
+      r1.right < r2.left ||
+      r1.left > r2.right ||
+      r1.bottom < r2.top ||
+      r1.top > r2.bottom
+    );
   }
 }
