@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <script src="storage.js"></script>
+    <script src=".js"></script>
     <div class="fixa">
 
     <!-- HUD DO TIME E CONTADOR -->  
@@ -67,45 +67,12 @@
 </div>
 
 
-<script>
-  let tempo = 0;
-  let moedasPegas = 0;
-  let totalMoedas = 0;
-  let timerInterval;
+<script src="telas.js"></script>
+<script src="storage.js"></script>
 
-  function iniciarTimer() {
-    timerInterval = setInterval(() => {
-      tempo++;
-      document.getElementById('timer').textContent = `Tempo: ${tempo}s`;
-    }, 1000);
-  }
 
-  function pararTimer() {
-    clearInterval(timerInterval);
-  }
-
-  function adicionarMoeda() {
-    moedasPegas++;
-    document.getElementById('contador').textContent = `Moedas: ${moedasPegas}`;
-
-    // Verifica se pegou todas
-    if (moedasPegas === totalMoedas) {
-      pararTimer();
-    }
-  }
-
-  // Começa quando clicar no botão "Play"
-  document.getElementById("butao").addEventListener("click", function () {
-    document.getElementById("play").style.display = "none";
-    iniciarTimer();
-  });
-
-  // Quando o jogo carregar, contar quantas moedas existem
-  window.addEventListener("load", () => {
-    totalMoedas = document.querySelectorAll('.moeda').length;
-  });
-</script>
-
+</body>
+</html>
 
 </body>
 </html>
