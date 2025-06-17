@@ -12,7 +12,7 @@
 <div id="play">
   <h1>Pica Park</h1>
   <input type="text" id="nomeJogador" placeholder="Digite seu nome">
-  <button onclick="iniciarJogo()">Começar Jogo</button>
+  <button onclick="salvarJogo()">Começar Jogo</button>
 </div>
 
 <!-- JOGO -->
