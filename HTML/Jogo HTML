@@ -56,5 +56,6 @@
   <h1 id="mensagemFinal"></h1>
   <button onclick="reiniciarJogo()">Jogar Novamente</button>
 </div>
+<script src=js/main.js></script>
 /body>
 </html>
