@@ -39,7 +39,7 @@
   
   <h1>Pica Park</h1>
 <input type = "text" id="nomeJogador" placeholder="Digite seu nome">
-  
+  button onclick="salvarNome()">Salvar</button
     </div>
 </body>
 </html>
