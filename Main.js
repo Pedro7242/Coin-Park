@@ -1,15 +1,21 @@
 function salvarNome() {
   const nome = document.getElementById('nomeJogador').value;
+
   if (nome.trim() !== "") {
     localStorage.setItem('nomeJogador', nome);
     alert("Nome salvo!");
+
+    
+    document.getElementById('play').style.display = 'none';
+
+   
+    document.getElementById('jogo').style.display = 'block';
+
+     
+    iniciarGameplay();
   } else {
     alert("Digite um nome primeiro.");
   }
-document.getElementById('play').style.display = 'none';
-iniciarGameplay()
-document.getElementById('jogo')
-
 }
 let moedas = Array.from(document.querySelectorAll('.moeda')).map(el => new Moeda(el));
 const porta = new Porta(document.querySelector('.porta'));
