@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 </head>
 <body>
-    <script src="telas.js"></script>
+    <div id = "jogo">
     <div class="fixa">
     <div class="teto"></div>
     <div class="chao"></div>
