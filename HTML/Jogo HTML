@@ -35,5 +35,10 @@
     <img class="moeda moeda16" src="moeda.png">
     <img class="porta" class = "trancada" src="porta.png">
     </div>
+<div id="play">
+  <input id="nick" placeholder="Digite seu nome">
+  <h1>Pica Park</h1>
+  <button id="butao" onclick="location.reload()">Jogar</button>
+    </div>
 </body>
 </html>
