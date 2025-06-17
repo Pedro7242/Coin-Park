@@ -8,7 +8,7 @@ function salvarNome() {
   }
 document.getElementById('play').style.display = 'none';
 iniciarGameplay()
-document.getElementById()
+document.getElementById('jogo')
 
 }
 let moedas = Array.from(document.querySelectorAll('.moeda')).map(el => new Moeda(el));
