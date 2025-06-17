@@ -1,15 +1,23 @@
-1<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Pica Park</title>
+  <link rel="stylesheet" href="css.css">
 </head>
 <body>
-    <div id = "jogo">
-    <div class="fixa">
+
+<!-- TELA DE INÍCIO -->
+<div id="play">
+  <h1>Pica Park</h1>
+  <input type="text" id="nomeJogador" placeholder="Digite seu nome">
+  <button onclick="iniciarJogo()">Começar Jogo</button>
+</div>
+
+<!-- JOGO -->
+<div id="jogo" style="display: none;">
+  <div class="fixa">
     <div class="teto"></div>
     <div class="chao"></div>
     <div class="plataforma"></div>
@@ -17,11 +25,13 @@
     <div class="camada1"></div>
     <div class="camada2"></div>
     <div class="camada3"></div>
-    <img  class="moeda moeda1" src="moeda.png">
+
+    <!-- Moedas -->
+    <img class="moeda moeda1" src="moeda.png">
     <img class="moeda moeda2" src="moeda.png">
-    <img  class=" moeda moeda3" src="moeda.png">
+    <img class="moeda moeda3" src="moeda.png">
     <img class="moeda moeda4" src="moeda.png">
-    <img  class="moeda moeda5" src="moeda.png">
+    <img class="moeda moeda5" src="moeda.png">
     <img class="moeda moeda6" src="moeda.png">
     <img class="moeda moeda7" src="moeda.png">
     <img class="moeda moeda8" src="moeda.png">
@@ -33,13 +43,18 @@
     <img class="moeda moeda14" src="moeda.png">
     <img class="moeda moeda15" src="moeda.png">
     <img class="moeda moeda16" src="moeda.png">
-    <img class="porta" class = "trancada" src="porta.png">
-    </div>
-<div id="play">
-  
-  <h1>Pica Park</h1>
-<input type = "text" id="nomeJogador" placeholder="Digite seu nome">
-  button onclick="salvarNome()">Salvar</button
-    </div>
-</body>
+
+    <!-- Porta -->
+    <img class="porta trancada" src="porta.png">
+  </div>
+</div>
+
+<!-- Tela de resultado (inicialmente escondida) -->
+<div id="resultado" style="display: none; position: absolute; top: 0; left: 0; 
+  width: 100%; height: 100%; background: rgba(0,0,0,0.8); color: white; z-index: 999; 
+  display: flex; flex-direction: column; align-items: center; justify-content: center;">
+  <h1 id="mensagemFinal"></h1>
+  <button onclick="reiniciarJogo()">Jogar Novamente</button>
+</div>
+/body>
 </html>
