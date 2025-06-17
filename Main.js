@@ -6,7 +6,10 @@ function salvarNome() {
   } else {
     alert("Digite um nome primeiro.");
   }
-document.getElementById('play').style.display = 'none'
+document.getElementById('play').style.display = 'none';
+iniciarGameplay()
+document.getElementById()
+
 }
 let moedas = Array.from(document.querySelectorAll('.moeda')).map(el => new Moeda(el));
 const porta = new Porta(document.querySelector('.porta'));
