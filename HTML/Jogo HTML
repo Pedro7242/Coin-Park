@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+1<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -36,9 +36,10 @@
     <img class="porta" class = "trancada" src="porta.png">
     </div>
 <div id="play">
-  <input id="nick" placeholder="Digite seu nome">
+  
   <h1>Pica Park</h1>
-  <button id="butao" onclick="location.reload()">Jogar</button>
+<input type = "text" id="nomeJogador" placeholder="Digite seu nome">
+  
     </div>
 </body>
 </html>
