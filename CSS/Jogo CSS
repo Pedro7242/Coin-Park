@@ -1,16 +1,74 @@
+#play {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  color: #2a2344;
+  gap: 20px;
+}
+
+#play h1 {
+  font-size: 100px;
+  color: darksalmon;
+}
+
+#nick {
+  padding: 10px;
+  font-size: 16px;
+  width: 260px;
+  top: 300px;
+  background-color: #ffffff;
+  color: #4e342e;
+}
+
+#play button {
+  padding: 10px 20px;
+  font-size: 30px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #4e342e;
+  border: none;
+}
+
+#contador {
+  position: absolute;
+  top: 130px;
+  left: -10;
+  width: 100%;
+  display: flex;
+  color: 	#4e342e;
+  font-size: 20px;
+}
+
+#timer{
+  position: absolute;
+  top: 130px;
+  left: 1120px;
+  width: 100%;
+  display: flex;
+  color: 	#4e342e;
+  font-size: 20px;
+}
+
 * {
   padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  background-color: aquamarine;
+  background-color: #fff8e1;
   overflow: hidden;
   margin:0;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  font-family: 'Press Start 2P', cursive;
 }
 
 div.fixa {
@@ -22,7 +80,7 @@ div.fixa {
 div.chao {
   width: 1500px;
   height: 70px;
-  background-color: blueviolet;
+  background-color: #8d6e63;
   position: absolute;
   top: 650px;
   left:-110px;
@@ -34,7 +92,7 @@ div.teto {
   left: -110px;
   width: 1500px;
   height: 70px;
-  background-color: blueviolet;
+  background-color: #8d6e63;
 }
 
 div.plataforma {
@@ -42,7 +100,7 @@ div.plataforma {
   left: 845px;
   height: 60px;
   width: 520px;
-  background-color: blueviolet;
+  background-color: #8d6e63;
   top: 330px;
   border-radius: 10px;
 }
@@ -52,7 +110,7 @@ div.plataforma2 {
   left: -85px;
   height: 60px;
   width: 520px;
-  background-color: blueviolet;
+  background-color: #8d6e63;
   top: 330px;
   border-radius: 10px;
 }
@@ -60,7 +118,7 @@ div.plataforma2 {
 div.camada1 {
   width: 384px;
   height: 85px;
-  background-color: blueviolet;
+  background-color: #8d6e63;
   position: absolute;
   top: 570px;
   border-radius: 5px;
@@ -70,7 +128,7 @@ div.camada1 {
 div.camada2 {
   width: 256px;
   height: 85px;
-  background-color: blueviolet;
+  background-color: #8d6e63;
   position: absolute;
   top: 490px;
   border-radius: 5px;
@@ -80,7 +138,7 @@ div.camada2 {
 div.camada3 {
   width: 128px;
   height: 85px;
-  background-color: blueviolet;
+  background-color: #8d6e63;
   position: absolute;
   top: 410px;
   border-radius: 5px;
@@ -181,9 +239,46 @@ div.camada3 {
     top: 240px;
     left:1180px;
 }
+.moeda16{
+    width: 60px;
+    position: absolute;
+    top: 240px;
+    left:1180px;
+}
+.moeda17{
+    width: 60px;
+    position: absolute;
+    top: 174px;
+    left:67px;
+}
+.moeda18{
+    width: 60px;
+    position: absolute;
+    top: 174px;
+    left:211px;
+}
+.moeda19{
+    width: 60px;
+    position: absolute;
+    top: 174px;
+    left: 968px;
+}
+.moeda20{
+    width: 60px;
+    position: absolute;
+    top: 174px;
+    left:1113px;
+}
 .porta{
     width: 175px;
     position:absolute;
     top:237px;
     left:550px;
+}
+
+#play h1,
+#play button,
+#nick,
+#hud {
+  font-family: 'Press Start 2P', cursive;
 }
