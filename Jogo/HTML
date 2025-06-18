@@ -20,12 +20,7 @@
 
     <!-- TELA DE FIM -->
     
-<div id="fim" style="display: none;">
-  <h1>Fim de Jogo</h1>
-  <p>Seu tempo: <span id="tempo-final">0</span>s</p>
-  <div id="ranking"></div>
-  <button id="reiniciar">Jogar de novo</button>
-</div>
+
     <!-- PLATAFORMAS -->
     <div class="teto"></div>
     <div class="chao"></div>
@@ -34,6 +29,8 @@
     <div class="camada1 piso"></div>
     <div class="camada2 piso"></div>
     <div class="camada3 piso"></div>
+    <div class="paredeesq"></div>
+    <div class="parededir"></div>
 
     <div id="jogador" class="jogador"></div>
 
@@ -65,9 +62,14 @@
 <div id="play">
   <h1> Coin Park</h1>
   <input id="nick" placeholder="Digite seu nome">
-  <button id="butao">Jogar</button>
+  <button id="butao" class="enter">Jogar</button>
 </div>
-
+<div id="fim" style="display: none;">
+    <h1>Fim de Jogo</h1>
+    <p>Seu tempo: <span id="tempo-final">0</span>s</p>
+    <div id="ranking"></div>
+    <button id="reiniciar">Jogar de novo</button>
+  </div>
 
 <script src="js.js"></script>
 
