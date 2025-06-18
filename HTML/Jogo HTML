@@ -20,10 +20,12 @@
 
     <!-- TELA DE FIM -->
     <div id="fim" style="display: none;">
+  <div id="fim" style="display: none;">
   <h1>Fim de Jogo</h1>
-  <p>Sua Pontuação: <span id="pontuacao-final">0</span></p>
-  <p>Maior Pontuação: <span id="maior-pontuacao">0</span></p>
+  
   <button id="reiniciar">Jogar de novo</button>
+  <div id="ranking"></div> 
+</div>
 </div>
 
     <!-- PLATAFORMAS -->
