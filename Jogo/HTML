@@ -34,8 +34,6 @@
     <div class="camada1 piso"></div>
     <div class="camada2 piso"></div>
     <div class="camada3 piso"></div>
-    <div class="paredeesq"></div>
-    <div class="parededir"></div>
 
     <div id="jogador" class="jogador"></div>
 
