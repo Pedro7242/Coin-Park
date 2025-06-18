@@ -315,4 +315,3 @@ document.addEventListener('keyup', (e) => {
     jogadorInstancia.mover(0);
   }
 });
-
