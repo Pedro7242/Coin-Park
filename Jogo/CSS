@@ -11,14 +11,13 @@
   color: #2a2344;
   gap: 20px;
 }
-.jogador{
-   width: 20px;
-   height: 20px;
-   background-color: black;
-top: 390px;
-position: absolute;
-  left: 630px;
+.jogador {
+  width: 20px;
+  height: 20px;
+  background-color: black;
+  position: absolute;
 }
+
 #play h1 {
   font-size: 100px;
   color: darksalmon;
@@ -289,4 +288,7 @@ div.camada3 {
 #hud {
   font-family: 'Press Start 2P', cursive;
 }
-
+.porta.trancada {
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
