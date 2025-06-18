@@ -19,13 +19,13 @@
     </div>
 
     <!-- TELA DE FIM -->
-    <div id="fim" style="display: none;">
+    
+<div id="fim" style="display: none;">
   <h1>Fim de Jogo</h1>
-  <p>Sua Pontuação: <span id="pontuacao-final">0</span></p>
-  <p>Maior Pontuação: <span id="maior-pontuacao">0</span></p>
+  <p>Seu tempo: <span id="tempo-final">0</span>s</p>
+  <div id="ranking"></div>
   <button id="reiniciar">Jogar de novo</button>
 </div>
-
     <!-- PLATAFORMAS -->
     <div class="teto"></div>
     <div class="chao"></div>
