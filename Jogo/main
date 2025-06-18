@@ -17,15 +17,39 @@ function pararTimer() {
 }
 
 function mostrarTelaFinal() {
+  // mostrar a tela de fim
   document.getElementById('fim').style.display = 'block';
-  document.getElementById('pontuacao-final').textContent = moedasPegas;
+  document.getElementById('tempo-final').textContent = tempo;
 
-  const maiorPontuacao = Math.max(
-    moedasPegas,
-    parseInt(localStorage.getItem('maiorPontuacao')) || 0
-  );
-  localStorage.setItem('maiorPontuacao', maiorPontuacao);
-  document.getElementById('maior-pontuacao').textContent = maiorPontuacao;
+  // pegar nome do jogador
+  let nome = localStorage.getItem('nomeJogador') || "Sem nome";
+
+  // pegar ranking antigo
+  let ranking = localStorage.getItem('rankingTempo');
+  if (ranking) {
+    ranking = JSON.parse(ranking);
+  } else {
+    ranking = [];
+  }
+
+  // adicionar novo tempo ao ranking
+  ranking.push({ nome: nome, tempo: tempo });
+
+  // ordenar do menor tempo pro maior
+  ranking.sort(function(a, b) {
+    return a.tempo - b.tempo;
+  });
+
+  // guardar de volta no localStorage
+  localStorage.setItem('rankingTempo', JSON.stringify(ranking));
+
+  // mostrar na tela
+  let texto = "<h3>Ranking (Tempo)</h3>";
+  for (let i = 0; i < Math.min(5, ranking.length); i++) {
+    texto += "<p>" + (i + 1) + "º - " + ranking[i].nome + " - " + ranking[i].tempo + "s</p>";
+  }
+
+  document.getElementById('ranking').innerHTML = texto;
 }
 
 function adicionarMoeda() {
