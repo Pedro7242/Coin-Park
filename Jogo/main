@@ -19,6 +19,7 @@ function pararTimer() {
 function mostrarTelaFinal() {
   document.getElementById('fim').style.display = 'block';
   document.getElementById('pontuacao-final').textContent = moedasPegas;
+
   const maiorPontuacao = Math.max(
     moedasPegas,
     parseInt(localStorage.getItem('maiorPontuacao')) || 0
@@ -95,8 +96,8 @@ class Porta {
 class Jogador {
   constructor(elementoHtml) {
     this.el = elementoHtml;
-    this.x = parseInt(this.el.style.left) || 0;
-    this.y = parseInt(this.el.style.top) || 0;
+    this.x = 630;
+    this.y = 390;
 
     this.velX = 0;
     this.velY = 0;
@@ -144,32 +145,68 @@ class Jogador {
   }
 
   detectarColisoesComPiso() {
-    this.noChao = false;
+  this.noChao = false;
 
-    const jogadorRect = this.el.getBoundingClientRect();
+  const jogadorRect = {
+    left: this.x,
+    right: this.x + this.largura,
+    top: this.y,
+    bottom: this.y + this.altura,
+  };
 
-    for (const piso of this.pisos) {
-      const pisoRect = piso.getBoundingClientRect();
+  for (const piso of this.pisos) {
+    const pisoRect = piso.getBoundingClientRect();
 
-      const colidiu =
-        jogadorRect.bottom > pisoRect.top &&
-        jogadorRect.top < pisoRect.bottom &&
-        jogadorRect.right > pisoRect.left &&
-        jogadorRect.left < pisoRect.right;
+    const pisoBox = {
+      left: piso.offsetLeft,
+      top: piso.offsetTop,
+      right: piso.offsetLeft + piso.offsetWidth,
+      bottom: piso.offsetTop + piso.offsetHeight,
+    };
 
-      if (colidiu && this.velY >= 0 && jogadorRect.bottom <= pisoRect.top + this.velY) {
-        this.y = piso.offsetTop - this.altura;
+    const colidiu = !(
+      jogadorRect.right < pisoBox.left ||
+      jogadorRect.left > pisoBox.right ||
+      jogadorRect.bottom < pisoBox.top ||
+      jogadorRect.top > pisoBox.bottom
+    );
+
+    if (colidiu) {
+      // Verificar colisão vertical (cair em cima do piso)
+      if (
+        this.velY >= 0 &&
+        jogadorRect.bottom <= pisoBox.top + this.velY
+      ) {
+        this.y = pisoBox.top - this.altura;
         this.velY = 0;
         this.noChao = true;
       }
+
+      // Impedir atravessar por baixo
+      else if (
+        this.velY < 0 &&
+        jogadorRect.top >= pisoBox.bottom - this.velY
+      ) {
+        this.y = pisoBox.bottom;
+        this.velY = 0;
+      }
+
+      // Impedir atravessar lateralmente
+      else if (this.velX !== 0) {
+        if (jogadorRect.right > pisoBox.left && jogadorRect.left < pisoBox.left) {
+          this.x = pisoBox.left - this.largura;
+        } else if (jogadorRect.left < pisoBox.right && jogadorRect.right > pisoBox.right) {
+          this.x = pisoBox.right;
+        }
+        this.velX = 0;
+      }
     }
   }
+}
+
 
   coletarMoedas() {
-    this.moedas = this.moedas.filter(moeda => {
-      const foiColetada = moeda.verificarColisao(this.el);
-      return !foiColetada;
-    });
+    this.moedas = this.moedas.filter(moeda => !moeda.verificarColisao(this.el));
   }
 }
 
@@ -182,29 +219,45 @@ function loopJogo() {
   requestAnimationFrame(loopJogo);
 }
 
-// Aguarda DOM carregar
+function iniciarJogo() {
+  const jogadorEl = document.getElementById('jogador');
+  jogadorInstancia = new Jogador(jogadorEl);
+  jogadorInstancia.el.style.backgroundColor = 'red';
+
+  porta = new Porta(document.querySelector('.porta'));
+
+  totalMoedas = document.querySelectorAll('.moeda').length;
+  moedasPegas = 0;
+  tempo = 0;
+
+  document.getElementById('contador').textContent = `Moedas: 0/${totalMoedas}`;
+  document.getElementById('timer').textContent = `Tempo: 0s`;
+
+  iniciarTimer();
+  requestAnimationFrame(loopJogo);
+}
+
+// DOM carregado
 document.addEventListener("DOMContentLoaded", () => {
   const btnPlay = document.getElementById("butao");
   const telaPlay = document.getElementById("play");
-  const jogadorEl = document.getElementById('jogador');
-  const portaEl = document.querySelector('.porta');
-
-  porta = new Porta(portaEl);
-
-  totalMoedas = document.querySelectorAll('.moeda').length;
-  document.getElementById('contador').textContent = `Moedas: 0/${totalMoedas}`;
+  const nickInput = document.getElementById("nick");
 
   if (btnPlay && telaPlay) {
     btnPlay.addEventListener("click", () => {
+      const nome = nickInput.value.trim();
+
+      if (nome === '') {
+        alert("Digite seu nome para começar!");
+        return;
+      }
+
       telaPlay.style.display = "none";
-      iniciarTimer();
-      jogadorInstancia = new Jogador(jogadorEl);
-      jogadorInstancia.el.style.backgroundColor = 'red';
-      loopJogo();
+      iniciarJogo();
     });
   }
 
-  // Reiniciar jogo (opcional)
+  // Botão de reiniciar
   const btnReiniciar = document.getElementById('reiniciar');
   if (btnReiniciar) {
     btnReiniciar.addEventListener('click', () => {
@@ -213,7 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// CONTROLES DO JOGADOR
+// CONTROLES
 document.addEventListener('keydown', (e) => {
   if (!jogadorInstancia) return;
 
