@@ -1,71 +1,50 @@
-// === VARIÁVEIS GLOBAIS ===
+// ================================
+// VARIÁVEIS GLOBAIS
+// ================================
 let tempo = 0;
-let moedasPegas = 0;
+let moedasColetadas = 0;
 let totalMoedas = 0;
-let timerInterval;
-let jogadorInstancia;
+let intervaloTempo;
+let jogador;
 let porta;
 
-// === TIMER ===
-function iniciarTimer() {
-  timerInterval = setInterval(() => {
+// ================================
+// TEMPORIZADOR
+// ================================
+function iniciarContagem() {
+  intervaloTempo = setInterval(() => {
     tempo++;
     document.getElementById('timer').textContent = `Tempo: ${tempo}s`;
   }, 1000);
 }
 
-function pararTimer() {
-  clearInterval(timerInterval);
+function pararContagem() {
+  clearInterval(intervaloTempo);
 }
 
-// === TELA FINAL E RANKING ===
-function mostrarTelaFinal() {
-  document.getElementById('fim').style.display = 'block';
-  document.getElementById('tempo-final').textContent = tempo;
-
-  let nome = localStorage.getItem('nomeJogador') || "Sem nome";
-  let ranking = localStorage.getItem('rankingTempo');
-  ranking = ranking ? JSON.parse(ranking) : [];
-
-  ranking.push({ nome: nome, tempo: tempo });
-  ranking.sort((a, b) => a.tempo - b.tempo);
-  localStorage.setItem('rankingTempo', JSON.stringify(ranking));
-
-  let texto = "<h3>Ranking (Tempo)</h3>";
-  for (let i = 0; i < Math.min(5, ranking.length); i++) {
-    texto += `<p>${i + 1}º - ${ranking[i].nome} - ${ranking[i].tempo}s</p>`;
-  }
-
-  document.getElementById('ranking').innerHTML = texto;
-}
-
-// === MOEDAS ===
-function adicionarMoeda() {
-  moedasPegas++;
-  document.getElementById('contador').textContent = `Moedas: ${moedasPegas}/${totalMoedas}`;
-  if (moedasPegas === totalMoedas) {
-    porta.ativar();
-  }
-}
-
+// ================================
+// CLASSES
+// ================================
 class Moeda {
-  constructor(elementoHtml) {
-    this.elemento = elementoHtml;
+  constructor(el) {
+    this.el = el;
   }
 
-  verificarColisao(jogador) {
-    const retJogador = jogador.getBoundingClientRect();
-    const retMoeda = this.elemento.getBoundingClientRect();
+  colidiu(jogadorEl) {
+    const a = jogadorEl.getBoundingClientRect();
+    const b = this.el.getBoundingClientRect();
 
-    const colidiu =
-      retJogador.left < retMoeda.right &&
-      retJogador.right > retMoeda.left &&
-      retJogador.top < retMoeda.bottom &&
-      retJogador.bottom > retMoeda.top;
+    const colidiu = a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
 
     if (colidiu) {
-      this.elemento.remove();
-      adicionarMoeda();
+      this.el.remove();
+      moedasColetadas++;
+      document.getElementById('contador').textContent = `Moedas: ${moedasColetadas}/${totalMoedas}`;
+
+      if (moedasColetadas === totalMoedas) {
+        porta.ativar();
+      }
+
       return true;
     }
 
@@ -73,10 +52,9 @@ class Moeda {
   }
 }
 
-// === PORTA ===
 class Porta {
-  constructor(elemento) {
-    this.el = elemento;
+  constructor(el) {
+    this.el = el;
     this.ativa = false;
   }
 
@@ -85,48 +63,40 @@ class Porta {
     this.el.classList.remove('trancada');
   }
 
-  checarEntrada(jogador) {
+  verificarEntrada(jogadorEl) {
     if (!this.ativa) return;
 
-    const r1 = this.el.getBoundingClientRect();
-    const r2 = jogador.el.getBoundingClientRect();
+    const a = this.el.getBoundingClientRect();
+    const b = jogadorEl.getBoundingClientRect();
 
-    const encostou = !(
-      r1.right < r2.left ||
-      r1.left > r2.right ||
-      r1.bottom < r2.top ||
-      r1.top > r2.bottom
-    );
+    const entrou = !(a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom);
 
-    if (encostou) {
-      pararTimer();
+    if (entrou) {
+      pararContagem();
       mostrarTelaFinal();
     }
   }
 }
 
-// === JOGADOR ===
 class Jogador {
-  constructor(elementoHtml) {
-    this.el = elementoHtml;
+  constructor(el) {
+    this.el = el;
     this.x = 630;
     this.y = 390;
+    this.largura = el.offsetWidth;
+    this.altura = el.offsetHeight;
+
     this.velX = 0;
     this.velY = 0;
-    this.largura = this.el.offsetWidth;
-    this.altura = this.el.offsetHeight;
     this.noChao = false;
 
     this.velocidade = 4;
-    this.forcaPulo = 20;
+    this.pulo = 20;
     this.gravidade = 1;
-    this.limiteVelY = 12;
+    this.maxVelY = 12;
 
-    this.pisos = Array.from(document.querySelectorAll(
-      '.piso, .chao, .teto, .plataforma, .plataforma2, .camada1, .camada2, .camada3, .paredeesq, .parededir'
-    ));
-
-    this.moedas = Array.from(document.querySelectorAll('.moeda')).map(el => new Moeda(el));
+    this.pisos = [...document.querySelectorAll('.piso, .chao, .teto, .plataforma, .plataforma2, .camada1, .camada2, .camada3')];
+    this.moedas = [...document.querySelectorAll('.moeda')].map(el => new Moeda(el));
   }
 
   mover(direcao) {
@@ -135,66 +105,53 @@ class Jogador {
 
   pular() {
     if (this.noChao) {
-      this.velY = -this.forcaPulo;
+      this.velY = -this.pulo;
       this.noChao = false;
     }
   }
 
   aplicarGravidade() {
     this.velY += this.gravidade;
-    if (this.velY > this.limiteVelY) this.velY = this.limiteVelY;
+    if (this.velY > this.maxVelY) this.velY = this.maxVelY;
   }
 
   atualizar() {
     this.aplicarGravidade();
     this.x += this.velX;
     this.y += this.velY;
-
-    this.detectarColisoesComPiso();
+    this.checarColisoes();
     this.coletarMoedas();
-
-    this.el.style.left = this.x + "px";
-    this.el.style.top = this.y + "px";
+    this.el.style.left = this.x + 'px';
+    this.el.style.top = this.y + 'px';
   }
 
-  detectarColisoesComPiso() {
+  checarColisoes() {
     this.noChao = false;
-
-    const jogadorRect = {
-      left: this.x,
-      right: this.x + this.largura,
-      top: this.y,
-      bottom: this.y + this.altura,
-    };
+    const jogadorRect = { left: this.x, right: this.x + this.largura, top: this.y, bottom: this.y + this.altura };
 
     for (const piso of this.pisos) {
-      const pisoBox = {
+      const pisoRect = {
         left: piso.offsetLeft,
         top: piso.offsetTop,
         right: piso.offsetLeft + piso.offsetWidth,
         bottom: piso.offsetTop + piso.offsetHeight,
       };
 
-      const colidiu = !(
-        jogadorRect.right < pisoBox.left ||
-        jogadorRect.left > pisoBox.right ||
-        jogadorRect.bottom < pisoBox.top ||
-        jogadorRect.top > pisoBox.bottom
-      );
+      const colidiu = !(jogadorRect.right < pisoRect.left || jogadorRect.left > pisoRect.right || jogadorRect.bottom < pisoRect.top || jogadorRect.top > pisoRect.bottom);
 
       if (colidiu) {
-        if (this.velY >= 0 && jogadorRect.bottom <= pisoBox.top + this.velY) {
-          this.y = pisoBox.top - this.altura;
+        if (this.velY >= 0 && jogadorRect.bottom <= pisoRect.top + this.velY) {
+          this.y = pisoRect.top - this.altura;
           this.velY = 0;
           this.noChao = true;
-        } else if (this.velY < 0 && jogadorRect.top >= pisoBox.bottom - this.velY) {
-          this.y = pisoBox.bottom;
+        } else if (this.velY < 0 && jogadorRect.top >= pisoRect.bottom - this.velY) {
+          this.y = pisoRect.bottom;
           this.velY = 0;
         } else if (this.velX !== 0) {
-          if (jogadorRect.right > pisoBox.left && jogadorRect.left < pisoBox.left) {
-            this.x = pisoBox.left - this.largura;
-          } else if (jogadorRect.left < pisoBox.right && jogadorRect.right > pisoBox.right) {
-            this.x = pisoBox.right;
+          if (jogadorRect.right > pisoRect.left && jogadorRect.left < pisoRect.left) {
+            this.x = pisoRect.left - this.largura;
+          } else if (jogadorRect.left < pisoRect.right && jogadorRect.right > pisoRect.right) {
+            this.x = pisoRect.right;
           }
           this.velX = 0;
         }
@@ -203,110 +160,113 @@ class Jogador {
   }
 
   coletarMoedas() {
-    this.moedas = this.moedas.filter(moeda => !moeda.verificarColisao(this.el));
+    this.moedas = this.moedas.filter(moeda => !moeda.colidiu(this.el));
   }
 }
 
-// === LOOP PRINCIPAL ===
-function loopJogo() {
-  if (jogadorInstancia) {
-    jogadorInstancia.atualizar();
-    porta.checarEntrada(jogadorInstancia);
-  }
+// ================================
+// LÓGICA DO JOGO
+// ================================
+function mostrarTelaFinal() {
+  document.getElementById('fim').style.display = 'block';
+  document.getElementById('tempo-final').textContent = tempo;
 
-  requestAnimationFrame(loopJogo);
+  const nome = localStorage.getItem('nomeJogador') || 'Sem nome';
+  let ranking = JSON.parse(localStorage.getItem('rankingTempo') || '[]');
+  ranking.push({ nome, tempo });
+  ranking.sort((a, b) => a.tempo - b.tempo);
+  localStorage.setItem('rankingTempo', JSON.stringify(ranking));
+
+  let texto = '<h3>Ranking (Tempo)</h3>';
+  for (let i = 0; i < Math.min(5, ranking.length); i++) {
+    texto += `<p>${i + 1}º - ${ranking[i].nome} - ${ranking[i].tempo}s</p>`;
+  }
+  document.getElementById('ranking').innerHTML = texto;
 }
 
-// === INICIAR JOGO ===
+function loop() {
+  if (jogador) {
+    jogador.atualizar();
+    porta.verificarEntrada(jogador.el);
+  }
+  requestAnimationFrame(loop);
+}
+
 function iniciarJogo() {
-  const jogadorEl = document.getElementById('jogador');
-  jogadorInstancia = new Jogador(jogadorEl);
-  jogadorInstancia.el.style.backgroundColor = 'trasparent'; // <- escrito incorretamente
-
+  jogador = new Jogador(document.getElementById('jogador'));
   porta = new Porta(document.querySelector('.porta'));
 
   totalMoedas = document.querySelectorAll('.moeda').length;
-  moedasPegas = 0;
+  moedasColetadas = 0;
   tempo = 0;
 
   document.getElementById('contador').textContent = `Moedas: 0/${totalMoedas}`;
   document.getElementById('timer').textContent = `Tempo: 0s`;
 
-  iniciarTimer();
-  requestAnimationFrame(loopJogo);
+  iniciarContagem();
+  loop();
 }
 
-// === DOM CARREGADO ===
-document.addEventListener("DOMContentLoaded", () => {
-  const btnPlay = document.getElementById("butao");
-  const telaPlay = document.getElementById("play");
-  const nickInput = document.getElementById("nick");
+// ================================
+// EVENTOS
+// ================================
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('butao')?.addEventListener('click', () => {
+    const nome = document.getElementById('nick').value.trim();
+    if (!nome) return alert('Digite seu nome para começar!');
 
-  if (btnPlay && telaPlay) {
-    btnPlay.addEventListener("click", () => {
-      const nome = nickInput.value.trim();
-      if (nome === '') {
-        alert("Digite seu nome para começar!");
-        return;
-      }
-      localStorage.setItem("nomeJogador", nome);
-      telaPlay.style.display = "none";
-      iniciarJogo();
-    });
-  }
+    localStorage.setItem('nomeJogador', nome);
+    document.getElementById('play').style.display = 'none';
+    iniciarJogo();
+  });
 
-  const btnReiniciar = document.getElementById('reiniciar');
-  if (btnReiniciar) {
-    btnReiniciar.addEventListener('click', () => {
-      window.location.reload();
-    });
-  }
-
-  // === ANIMAÇÃO DO JOGADOR ===
-  let frame = 0;
-  const jogador = document.getElementById("jogador");
-
-  setInterval(() => {
-    if (!jogadorInstancia) return;
-
-    if (jogadorInstancia.velX !== 0) {
-      frame = (frame + 1) % 3;
-    } else {
-      frame = 0;
-    }
-
-    jogador.style.backgroundPosition = `-${frame * 48}px 0px`;
-
-    if (jogadorInstancia.velX < 0) {
-      jogador.style.transform = "scaleX(-1)";
-    } else if (jogadorInstancia.velX > 0) {
-      jogador.style.transform = "scaleX(1)";
-    }
-  }, 250);
+  document.getElementById('reiniciar')?.addEventListener('click', () => {
+    location.reload();
+  });
 });
 
-// === CONTROLES DO TECLADO ===
-document.addEventListener('keydown', (e) => {
-  if (!jogadorInstancia) return;
+// CONTROLES
+const tecla = e => {
+  if (!jogador) return;
+  const dir = (e.code === 'ArrowLeft' || e.code === 'KeyA') ? -1 : (e.code === 'ArrowRight' || e.code === 'KeyD') ? 1 : 0;
+  if (dir !== 0) jogador.mover(e.type === 'keydown' ? dir : 0);
+  if ((e.code === 'ArrowUp' || e.code === 'Space') && e.type === 'keydown') jogador.pular();
+};
 
-  if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
-    jogadorInstancia.mover(-1);
-  } else if (e.code === 'ArrowRight' || e.code === 'KeyD') {
-    jogadorInstancia.mover(1);
-  } else if (e.code === 'ArrowUp' || e.code === 'Space') {
-    jogadorInstancia.pular();
+['keydown', 'keyup'].forEach(evt => document.addEventListener(evt, tecla));
+
+function mostrarTelaFinal() {
+  // mostrar a tela de fim
+  document.getElementById('fim').style.display = 'block';
+  document.getElementById('tempo-final').textContent = tempo;
+
+  // pegar nome do jogador
+  let nome = localStorage.getItem('nomeJogador') || "Sem nome";
+
+  // pegar ranking antigo
+  let ranking = localStorage.getItem('rankingTempo');
+  if (ranking) {
+    ranking = JSON.parse(ranking);
+  } else {
+    ranking = [];
   }
-});
 
-document.addEventListener('keyup', (e) => {
-  if (!jogadorInstancia) return;
+  // adicionar novo tempo ao ranking
+  ranking.push({ nome: nome, tempo: tempo });
 
-  if (
-    e.code === 'ArrowLeft' ||
-    e.code === 'ArrowRight' ||
-    e.code === 'KeyA' ||
-    e.code === 'KeyD'
-  ) {
-    jogadorInstancia.mover(0);
+  // ordenar do menor tempo pro maior
+  ranking.sort(function(a, b) {
+    return a.tempo - b.tempo;
+  });
+
+  // guardar de volta no localStorage
+  localStorage.setItem('rankingTempo', JSON.stringify(ranking));
+
+  // mostrar na tela
+  let texto = "<h3>Ranking (Tempo)</h3>";
+  for (let i = 0; i < Math.min(5, ranking.length); i++) {
+    texto += "<p>" + (i + 1) + "º - " + ranking[i].nome + " - " + ranking[i].tempo + "s</p>";
   }
-});
+
+  document.getElementById('ranking').innerHTML = texto;
+}
