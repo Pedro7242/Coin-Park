@@ -17,14 +17,44 @@ function pararTimer() {
 }
 
 function mostrarTelaFinal() {
+  // mostra a tela de fim
   document.getElementById('fim').style.display = 'block';
-  document.getElementById('pontuacao-final').textContent = moedasPegas;
-  const maiorPontuacao = Math.max(
-    moedasPegas,
-    parseInt(localStorage.getItem('maiorPontuacao')) || 0
-  );
-  localStorage.setItem('maiorPontuacao', maiorPontuacao);
-  document.getElementById('maior-pontuacao').textContent = maiorPontuacao;
+
+  // mostra o tempo que a pessoa demorou
+  document.getElementById('tempo-final').textContent = tempo;
+
+  // pega o nome salvo
+  let nome = localStorage.getItem('nomeJogador');
+  if (!nome) {
+    nome = "Sem nome";
+  }
+
+  // pega o ranking salvo (se não tiver nada, começa vazio)
+  let ranking = localStorage.getItem('rankingTempo');
+  if (ranking) {
+    ranking = JSON.parse(ranking);
+  } else {
+    ranking = [];
+  }
+
+  // coloca o tempo dessa pessoa no ranking
+  ranking.push({ nome: nome, tempo: tempo });
+
+  // ordena do menor tempo pro maior
+  ranking.sort(function(a, b) {
+    return a.tempo - b.tempo;
+  });
+
+  // salva de novo o ranking atualizado
+  localStorage.setItem('rankingTempo', JSON.stringify(ranking));
+
+  // mostra o ranking na tela
+  let textoRanking = "<h3>Ranking de Tempo</h3>";
+  for (let i = 0; i < Math.min(5, ranking.length); i++) {
+    textoRanking += "<p>" + (i + 1) + "º - " + ranking[i].nome + ": " + ranking[i].tempo + "s</p>";
+  }
+
+  document.getElementById('ranking').innerHTML = textoRanking;
 }
 
 function adicionarMoeda() {
