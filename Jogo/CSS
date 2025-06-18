@@ -1,3 +1,19 @@
+* {
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #fff8e1;
+  overflow: hidden;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: 'Press Start 2P', cursive;
+}
+
 #fim {
   position: fixed;
   top: 0;
@@ -6,25 +22,20 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.9);
   display: flex;
-   flex-direction: column;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 999;
   color: white;
-  
   font-family: 'VT323', monospace;
 }
 
-
-
 #fim h1 {
   font-size: 40px;
-  
 }
 
 #fim p {
   font-size: 20px;
-  
 }
 
 #fim button {
@@ -36,7 +47,6 @@
   border: none;
   cursor: pointer;
 }
-
 
 #play {
   position: fixed;
@@ -51,26 +61,10 @@
   color: #2a2344;
   gap: 20px;
 }
-.jogador {
-  width: 20px;
-  height: 20px;
-  background-color: black;
-  position: absolute;
-  z-index: 999;
-}
 
 #play h1 {
   font-size: 100px;
   color: darksalmon;
-}
-
-#nick {
-  padding: 10px;
-  font-size: 16px;
-  width: 260px;
-  top: 300px;
-  background-color: #ffffff;
-  color: #4e342e;
 }
 
 #play button {
@@ -82,40 +76,49 @@
   border: none;
 }
 
+#nick {
+  padding: 10px;
+  font-size: 16px;
+  width: 260px;
+  top: 300px;
+  background-color: #ffffff;
+  color: #4e342e;
+}
+
+#play h1,
+#play button,
+#nick,
+#hud {
+  font-family: 'Press Start 2P', cursive;
+}
+
 #contador {
   position: absolute;
   top: 130px;
   left: -10;
   width: 100%;
   display: flex;
-  color: 	#4e342e;
+  color: #4e342e;
   font-size: 20px;
 }
 
-#timer{
+#timer {
   position: absolute;
   top: 130px;
   left: 1120px;
   width: 100%;
   display: flex;
-  color: 	#4e342e;
+  color: #4e342e;
   font-size: 20px;
 }
 
-* {
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background-color: #fff8e1;
-  overflow: hidden;
-  margin:0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-family: 'Press Start 2P', cursive;
+.jogador {
+  width: 48px;
+  height: 48px;
+  background-image: url("ninja.png");
+  background-size: 144px 48px;
+  background-position: 0px 0px;
+  position: absolute;
 }
 
 div.fixa {
@@ -130,7 +133,7 @@ div.chao {
   background-color: #8d6e63;
   position: absolute;
   top: 650px;
-  left:-110px;
+  left: -110px;
 }
 
 div.teto {
@@ -141,10 +144,21 @@ div.teto {
   height: 70px;
   background-color: #8d6e63;
 }
-
-div.plataforma {
+.paredeesq, .parededir{
   position: absolute;
-  left: 845px;
+  top:20px;
+  height:700px;
+  width: 10px;
+}
+.paredeesq{
+  left:-110px;
+}
+.parededir{
+  left:1380px;
+}
+div.plataforma,
+div.plataforma2 {
+  position: absolute;
   height: 60px;
   width: 520px;
   background-color: #8d6e63;
@@ -152,14 +166,12 @@ div.plataforma {
   border-radius: 10px;
 }
 
+div.plataforma {
+  left: 845px;
+}
+
 div.plataforma2 {
-  position: absolute;
   left: -85px;
-  height: 60px;
-  width: 520px;
-  background-color: #8d6e63;
-  top: 330px;
-  border-radius: 10px;
 }
 
 div.camada1 {
@@ -191,143 +203,47 @@ div.camada3 {
   border-radius: 5px;
   left: 576px;
 }
-.moeda1{
-    width: 60px;
-    position:absolute;
-    top:540px;
-}
-.moeda2{
-    width: 60px;
-    position: absolute;
-    top: 540px;
-    left: 140px;
+
+.moeda1, .moeda2, .moeda3, .moeda4, .moeda5, .moeda6, .moeda7,
+.moeda8, .moeda9, .moeda10, .moeda11, .moeda12, .moeda13,
+.moeda14, .moeda15, .moeda16, .moeda17, .moeda18, .moeda19, .moeda20 {
+  width: 60px;
+  position: absolute;
 }
 
-.moeda3{
-    width: 60px;
-    position: absolute;
-    top: 540px;
-    left: 280px;
-}
-.moeda4{
-    width: 60px;
-    position: absolute;
-    top: 520px;
-    left: 450px;
-}
-.moeda5{
-    width: 60px;
-    position: absolute;
-    top: 440px;;
-    left: 515px;
-}
-.moeda6{
-    width: 60px;
-    position: absolute;
-    top: 440px;
-    left: 705px;
-}
-.moeda7{
-    width: 60px;
-    position: absolute;
-    top: 520px;
-    left: 770px;
-}
-.moeda8{
-    width: 60px;
-    position: absolute;
-    top: 540px;
-    left: 900px;
-}
-.moeda9{
-    width: 60px;
-    position: absolute;
-    top: 540px;
-    left: 1040px;
-}
-.moeda10{
-    width: 60px;
-    position: absolute;
-    top: 540px;
-    left: 1180px;
-}
-.moeda11{
-    width: 60px;
-    position: absolute;
-    top: 240px;
-}
-.moeda12{
-    width: 60px;
-    position: absolute;
-    top: 240px;
-    left:140px;
-}
-.moeda13{
-    width: 60px;
-    position: absolute;
-    top: 240px;
-    left:280px;
-}
-.moeda14{
-    width: 60px;
-    position: absolute;
-    top: 240px;
-    left:900px;
-}
-.moeda15{
-    width: 60px;
-    position: absolute;
-    top: 240px;
-    left:1040px;
-}
-.moeda16{
-    width: 60px;
-    position: absolute;
-    top: 240px;
-    left:1180px;
-}
-.moeda16{
-    width: 60px;
-    position: absolute;
-    top: 240px;
-    left:1180px;
-}
-.moeda17{
-    width: 60px;
-    position: absolute;
-    top: 174px;
-    left:67px;
-}
-.moeda18{
-    width: 60px;
-    position: absolute;
-    top: 174px;
-    left:211px;
-}
-.moeda19{
-    width: 60px;
-    position: absolute;
-    top: 174px;
-    left: 968px;
-}
-.moeda20{
-    width: 60px;
-    position: absolute;
-    top: 174px;
-    left:1113px;
-}
-.porta{
-    width: 175px;
-    position:absolute;
-    top:237px;
-    left:550px;
+.moeda1 { top: 540px; }
+.moeda2 { top: 540px; left: 140px; }
+.moeda3 { top: 540px; left: 280px; }
+.moeda4 { top: 520px; left: 450px; }
+.moeda5 { top: 440px; left: 515px; }
+.moeda6 { top: 440px; left: 705px; }
+.moeda7 { top: 520px; left: 770px; }
+.moeda8 { top: 540px; left: 900px; }
+.moeda9 { top: 540px; left: 1040px; }
+.moeda10 { top: 540px; left: 1180px; }
+.moeda11 { top: 240px; }
+.moeda12 { top: 240px; left: 140px; }
+.moeda13 { top: 240px; left: 280px; }
+.moeda14 { top: 240px; left: 900px; }
+.moeda15 { top: 240px; left: 1040px; }
+.moeda16 { top: 240px; left: 1180px; }
+.moeda17 { top: 174px; left: 67px; }
+.moeda18 { top: 174px; left: 211px; }
+.moeda19 { top: 174px; left: 968px; }
+.moeda20 { top: 174px; left: 1113px; }
+
+.porta {
+  width: 175px;
+  position: absolute;
+  top: 237px;
+  left: 550px;
 }
 
-#play h1,
-#play button,
-#nick,
-#hud {
-  font-family: 'Press Start 2P', cursive;
+.porta.trancada {
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
+
 }
 .porta.trancada {
   opacity: 0.5;
