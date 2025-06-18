@@ -20,11 +20,10 @@
 
     <!-- TELA DE FIM -->
     <div id="fim" style="display: none;">
-  <div id="fim" style="display: none;">
   <h1>Fim de Jogo</h1>
-  
+  <p>Seu tempo: <span id="tempo-final">0</span>s</p>
+  <div id="ranking"></div>
   <button id="reiniciar">Jogar de novo</button>
-  <div id="ranking"></div> 
 </div>
 </div>
 
