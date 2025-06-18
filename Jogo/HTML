@@ -31,9 +31,9 @@
     <div class="chao"></div>
     <div class="plataforma"></div>
     <div class="plataforma2"></div>
-    <div class="camada1"></div>
-    <div class="camada2"></div>
-    <div class="camada3"></div>
+    <div class="camada1 piso"></div>
+    <div class="camada2 piso"></div>
+    <div class="camada3 piso"></div>
 
     <div id="jogador" class="jogador"></div>
 
@@ -58,7 +58,7 @@
     <img class="moeda moeda18" src="moeda.png">
     <img class="moeda moeda19" src="moeda.png">
     <img class="moeda moeda20" src="moeda.png">
-    <img class="porta" src="porta.png">
+    <img class="porta trancada" src="porta.png">
     </div>
 
    <!-- TELA DE PLAY -->
