@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="jogo.css">
+    <title>Jogo</title>
+    <link rel="stylesheet" href="css.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
@@ -63,13 +63,13 @@
 
    <!-- TELA DE PLAY -->
 <div id="play">
-  <h1>Pica Park</h1>
+  <h1> Coin Park</h1>
   <input id="nick" placeholder="Digite seu nome">
   <button id="butao">Jogar</button>
 </div>
 
 
-<script src="Main.js"></script>
+<script src="js.js"></script>
 
 
 </body>
@@ -77,4 +77,3 @@
 
 </body>
 </html>
-
