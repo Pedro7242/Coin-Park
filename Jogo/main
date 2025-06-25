@@ -119,10 +119,10 @@ class Jogador {
     this.altura = this.el.offsetHeight;
     this.noChao = false;
 
-    this.velocidade = 4;
+    this.velocidade = 5;
     this.forcaPulo = 20;
-    this.gravidade = 1;
-    this.limiteVelY = 12;
+    this.gravidade = 0.8;
+    this.limiteVelY = 15;
 
     this.pisos = Array.from(document.querySelectorAll(
       '.piso, .chao, .teto, .plataforma, .plataforma2, .camada1, .camada2, .camada3, .paredeesq, .parededir'
@@ -147,62 +147,65 @@ class Jogador {
     if (this.velY > this.limiteVelY) this.velY = this.limiteVelY;
   }
 
-  atualizar() {
+ atualizar() {
     this.aplicarGravidade();
+    
     this.x += this.velX;
+    this.detectarColisoes('horizontal');
+    
     this.y += this.velY;
+    this.detectarColisoes('vertical');
 
-    this.detectarColisoesComPiso();
     this.coletarMoedas();
 
     this.el.style.left = this.x + "px";
     this.el.style.top = this.y + "px";
   }
 
-  detectarColisoesComPiso() {
-    this.noChao = false;
-
+  detectarColisoes(eixo) {
     const jogadorRect = {
-      left: this.x,
-      right: this.x + this.largura,
-      top: this.y,
-      bottom: this.y + this.altura,
+      x: this.x,
+      y: this.y,
+      width: this.largura,
+      height: this.altura
     };
 
     for (const piso of this.pisos) {
-      const pisoBox = {
-        left: piso.offsetLeft,
-        top: piso.offsetTop,
-        right: piso.offsetLeft + piso.offsetWidth,
-        bottom: piso.offsetTop + piso.offsetHeight,
+      const pisoRect = {
+        x: piso.offsetLeft,
+        y: piso.offsetTop,
+        width: piso.offsetWidth,
+        height: piso.offsetHeight
       };
 
-      const colidiu = !(
-        jogadorRect.right < pisoBox.left ||
-        jogadorRect.left > pisoBox.right ||
-        jogadorRect.bottom < pisoBox.top ||
-        jogadorRect.top > pisoBox.bottom
-        
-      );
-
-      if (colidiu) {
-        if (this.velY >= 0 && jogadorRect.bottom <= pisoBox.top + this.velY) {
-          this.y = pisoBox.top - this.altura;
-          this.velY = 0;
-          this.noChao = true;
-        } else if (this.velY < 0 && jogadorRect.top >= pisoBox.bottom - this.velY) {
-          this.y = pisoBox.bottom;
-          this.velY = 0;
-        } else if (this.velX !== 0) {
-          if (jogadorRect.right > pisoBox.left && jogadorRect.left < pisoBox.left) {
-            this.x = pisoBox.left - this.largura;
-          } else if (jogadorRect.left < pisoBox.right && jogadorRect.right > pisoBox.right) {
-            this.x = pisoBox.right;
+      if (this.colisaoRetangulos(jogadorRect, pisoRect)) {
+        if (eixo === 'horizontal') {
+          if (this.velX > 0) {
+            this.x = pisoRect.x - jogadorRect.width; 
+          } else if (this.velX < 0) {
+            this.x = pisoRect.x + pisoRect.width; 
           }
-          this.velX = 0;
+        } else if (eixo === 'vertical') {
+          if (this.velY > 0) {
+            this.y = pisoRect.y - jogadorRect.height;
+            this.velY = 0;
+            this.noChao = true;
+          } else if (this.velY < 0) {
+            this.y = pisoRect.y + pisoRect.height;
+            this.velY = 0;
+          }
         }
       }
     }
+  }
+
+  colisaoRetangulos(rect1, rect2) {
+    return (
+      rect1.x < rect2.x + rect2.width &&
+      rect1.x + rect1.width > rect2.x &&
+      rect1.y < rect2.y + rect2.height &&
+      rect1.y + rect1.height > rect2.y
+    );
   }
 
   coletarMoedas() {
