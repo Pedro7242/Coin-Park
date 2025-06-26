@@ -9,7 +9,6 @@
 </head>
 <body>
 <script>
-  // === CRIAÇÃO DINÂMICA DO HTML ===
   const body = document.body;
   const fixa = document.createElement("div");
   fixa.className = "fixa";
