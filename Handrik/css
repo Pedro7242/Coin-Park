@@ -1,318 +1,253 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Jogo</title>
-  <link rel="stylesheet" href="css.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-</head>
-<body>
-<script>
-  // === CRIAÇÃO DINÂMICA DO HTML ===
-  const body = document.body;
-  const fixa = document.createElement("div");
-  fixa.className = "fixa";
-
-  const hud = document.createElement("div");
-  hud.className = "hud";
-
-  const contador = document.createElement("div");
-  contador.id = "contador";
-  contador.textContent = "Moedas: 0/20";
-
-  const timer = document.createElement("div");
-  timer.id = "timer";
-  timer.textContent = "Tempo: 0s";
-
-  hud.append(contador, timer);
-  fixa.appendChild(hud);
-
-  const plataformas = ["teto", "chao", "plataforma", "plataforma2", "camada1 piso", "camada2 piso", "camada3 piso", "paredeesq", "parededir"];
-  plataformas.forEach(cls => {
-    const el = document.createElement("div");
-    el.className = cls;
-    fixa.appendChild(el);
-  });
-
-  const jogadorEl = document.createElement("div");
-  jogadorEl.id = "jogador";
-  jogadorEl.className = "jogador";
-  fixa.appendChild(jogadorEl);
-
-  for (let i = 1; i <= 20; i++) {
-    const moeda = document.createElement("img");
-    moeda.className = `moeda moeda${i}`;
-    moeda.src = "moeda.png";
-    fixa.appendChild(moeda);
+* {
+    padding: 0;
+    box-sizing: border-box;
   }
-
-  const portaEl = document.createElement("img");
-  portaEl.className = "porta trancada";
-  portaEl.src = "porta.png";
-  fixa.appendChild(portaEl);
-  body.appendChild(fixa);
-
-  const play = document.createElement("div");
-  play.id = "play";
-  play.innerHTML = `
-    <h1>Coin Park</h1>
-    <input id="nick" placeholder="Digite seu nome">
-    <button id="butao" class="enter">Jogar</button>
-  `;
-  body.appendChild(play);
-
-  const fim = document.createElement("div");
-  fim.id = "fim";
-  fim.style.display = "none";
-  fim.innerHTML = `
-    <h1>Fim de Jogo</h1>
-    <p>Seu tempo: <span id="tempo-final">0</span>s</p>
-    <div id="ranking"></div>
-    <button id="reiniciar">Jogar de novo</button>
-  `;
-  body.appendChild(fim);
-
-  // === CÓDIGO DO JOGO ===
-  let tempo = 0;
-  let moedasPegas = 0;
-  let totalMoedas = 0;
-  let timerInterval;
-  let jogadorInstancia;
-  let porta;
-  let fimDeJogo = false;
-
-  function iniciarTimer() {
-    timerInterval = setInterval(() => {
-      tempo++;
-      document.getElementById('timer').textContent = `Tempo: ${tempo}s`;
-    }, 1000);
+  
+  body {
+    background-color: #fff8e1;
+    overflow: hidden;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Press Start 2P', cursive;
   }
-
-  function pararTimer() {
-    clearInterval(timerInterval);
+  
+  #fim {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    z-index: 999;
+    color: white;
+    font-family: 'VT323', monospace;
+    text-align: center;
   }
-
-  function mostrarTelaFinal() {
-    fimDeJogo = true;
-    document.getElementById('fim').style.display = 'block';
-    document.getElementById('tempo-final').textContent = tempo;
-
-    let nome = localStorage.getItem('nomeJogador') || "Sem nome";
-    let ranking = localStorage.getItem('rankingTempo');
-    ranking = ranking ? JSON.parse(ranking) : [];
-
-    ranking.push({ nome: nome, tempo: tempo });
-    ranking.sort((a, b) => a.tempo - b.tempo);
-    localStorage.setItem('rankingTempo', JSON.stringify(ranking));
-
-    let texto = "<h3>Ranking (Tempo)</h3>";
-    for (let i = 0; i < Math.min(5, ranking.length); i++) {
-      texto += `<p>${i + 1}º - ${ranking[i].nome} - ${ranking[i].tempo}s</p>`;
-    }
-
-    document.getElementById('ranking').innerHTML = texto;
+  
+  #fim h1 {
+    font-size: 40px;
   }
-
-  function adicionarMoeda() {
-    moedasPegas++;
-    document.getElementById('contador').textContent = `Moedas: ${moedasPegas}/${totalMoedas}`;
-    if (moedasPegas === totalMoedas) {
-      porta.ativar();
-    }
+  
+  #fim p {
+    font-size: 20px;
   }
-
-  class Moeda {
-    constructor(elementoHtml) {
-      this.elemento = elementoHtml;
-    }
-
-    verificarColisao(jogador) {
-      const retJogador = jogador.getBoundingClientRect();
-      const retMoeda = this.elemento.getBoundingClientRect();
-      const colidiu =
-        retJogador.left < retMoeda.right &&
-        retJogador.right > retMoeda.left &&
-        retJogador.top < retMoeda.bottom &&
-        retJogador.bottom > retMoeda.top;
-
-      if (colidiu) {
-        this.elemento.remove();
-        adicionarMoeda();
-        return true;
-      }
-      return false;
-    }
+  
+  #fim button {
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #4e342e;
+    border: none;
+    cursor: pointer;
   }
-
-  class Porta {
-    constructor(elemento) {
-      this.el = elemento;
-      this.ativa = false;
-    }
-
-    ativar() {
-      this.ativa = true;
-      this.el.classList.remove('trancada');
-    }
-
-    checarEntrada(jogador) {
-      if (!this.ativa) return;
-      const r1 = this.el.getBoundingClientRect();
-      const r2 = jogador.el.getBoundingClientRect();
-      const encostou = !(r1.right < r2.left || r1.left > r2.right || r1.bottom < r2.top || r1.top > r2.bottom);
-      if (encostou) {
-        pararTimer();
-        mostrarTelaFinal();
-      }
-    }
+  
+  #play {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    color: #2a2344;
+    gap: 20px;
   }
-
-  class Jogador {
-    constructor(el) {
-      this.el = el;
-      this.x = 630;
-      this.y = 300;
-      this.velX = 0;
-      this.velY = 0;
-      this.largura = this.el.offsetWidth;
-      this.altura = this.el.offsetHeight;
-      this.noChao = false;
-
-      this.velocidade = 5;
-      this.forcaPulo = 20;
-      this.gravidade = 0.8;
-      this.limiteVelY = 15;
-
-      this.pisos = Array.from(document.querySelectorAll(
-        '.piso, .chao, .teto, .plataforma, .plataforma2, .camada1, .camada2, .camada3, .paredeesq, .parededir'
-      ));
-
-      this.moedas = Array.from(document.querySelectorAll('.moeda')).map(el => new Moeda(el));
-    }
-
-    mover(direcao) {
-      this.velX = direcao * this.velocidade;
-    }
-
-    pular() {
-      if (this.noChao) {
-        this.velY = -this.forcaPulo;
-        this.noChao = false;
-      }
-    }
-
-    aplicarGravidade() {
-      this.velY += this.gravidade;
-      if (this.velY > this.limiteVelY) this.velY = this.limiteVelY;
-    }
-
-    atualizar() {
-      this.aplicarGravidade();
-      this.x += this.velX;
-      this.detectarColisoes('horizontal');
-      this.y += this.velY;
-      this.detectarColisoes('vertical');
-      this.coletarMoedas();
-      this.el.style.left = this.x + "px";
-      this.el.style.top = this.y + "px";
-    }
-
-    detectarColisoes(eixo) {
-      const jogadorRect = { x: this.x, y: this.y, width: this.largura, height: this.altura };
-      for (const piso of this.pisos) {
-        const pisoRect = { x: piso.offsetLeft, y: piso.offsetTop, width: piso.offsetWidth, height: piso.offsetHeight };
-        if (this.colisaoRetangulos(jogadorRect, pisoRect)) {
-          if (eixo === 'horizontal') {
-            if (this.velX > 0) this.x = pisoRect.x - jogadorRect.width;
-            else if (this.velX < 0) this.x = pisoRect.x + pisoRect.width;
-          } else {
-            if (this.velY > 0) {
-              this.y = pisoRect.y - jogadorRect.height;
-              this.velY = 0;
-              this.noChao = true;
-            } else if (this.velY < 0) {
-              this.y = pisoRect.y + pisoRect.height;
-              this.velY = 0;
-            }
-          }
-        }
-      }
-    }
-
-    colisaoRetangulos(r1, r2) {
-      return r1.x < r2.x + r2.width && r1.x + r1.width > r2.x &&
-             r1.y < r2.y + r2.height && r1.y + r1.height > r2.y;
-    }
-
-    coletarMoedas() {
-      this.moedas = this.moedas.filter(moeda => !moeda.verificarColisao(this.el));
-    }
+  
+  #play h1 {
+    font-size: 100px;
+    color: darksalmon;
   }
-
-  function loopJogo() {
-    if (!fimDeJogo) {
-      if (jogadorInstancia) {
-        jogadorInstancia.atualizar();
-        porta.checarEntrada(jogadorInstancia);
-      }
-      requestAnimationFrame(loopJogo);
-    }
+  
+  #play button {
+    padding: 10px 20px;
+    font-size: 30px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #4e342e;
+    border: none;
   }
-
-  function iniciarJogo() {
-    jogadorInstancia = new Jogador(document.getElementById('jogador'));
-    porta = new Porta(document.querySelector('.porta'));
-    totalMoedas = document.querySelectorAll('.moeda').length;
-    moedasPegas = 0;
-    tempo = 0;
-    document.getElementById('contador').textContent = `Moedas: 0/${totalMoedas}`;
-    document.getElementById('timer').textContent = `Tempo: 0s`;
-    iniciarTimer();
-    requestAnimationFrame(loopJogo);
+  
+  #nick {
+    padding: 10px;
+    font-size: 16px;
+    width: 260px;
+    top: 300px;
+    background-color: #ffffff;
+    color: #4e342e;
   }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const btnPlay = document.getElementById("butao");
-    const telaPlay = document.getElementById("play");
-    const nickInput = document.getElementById("nick");
-
-    btnPlay.addEventListener("click", () => {
-      const nome = nickInput.value.trim();
-      if (nome === '') {
-        alert("Digite seu nome para começar!");
-        return;
-      }
-      localStorage.setItem("nomeJogador", nome);
-      telaPlay.style.display = "none";
-      iniciarJogo();
-    });
-
-    document.getElementById('reiniciar').addEventListener('click', () => {
-      window.location.reload();
-    });
-
-    let frame = 0;
-    const jogador = document.getElementById("jogador");
-
-    setInterval(() => {
-      if (!jogadorInstancia) return;
-      jogador.style.backgroundPosition = `-${(jogadorInstancia.velX !== 0 ? frame++ % 3 : 0) * 48}px 0px`;
-      jogador.style.transform = jogadorInstancia.velX < 0 ? "scaleX(-1)" : jogadorInstancia.velX > 0 ? "scaleX(1)" : "";
-    }, 250);
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (!jogadorInstancia) return;
-    if (e.code === 'ArrowLeft' || e.code === 'KeyA') jogadorInstancia.mover(-1);
-    else if (e.code === 'ArrowRight' || e.code === 'KeyD') jogadorInstancia.mover(1);
-    else if (e.code === 'ArrowUp' || e.code === 'Space') jogadorInstancia.pular();
-  });
-
-  document.addEventListener('keyup', (e) => {
-    if (!jogadorInstancia) return;
-    if (['ArrowLeft', 'ArrowRight', 'KeyA', 'KeyD'].includes(e.code)) jogadorInstancia.mover(0);
-  });
-</script>
-</body>
-</html>
+  
+  #play h1,
+  #play button,
+  #nick,
+  #hud {
+    font-family: 'Press Start 2P', cursive;
+  }
+  
+  #contador {
+    position: absolute;
+    top: 130px;
+    left: -10;
+    width: 100%;
+    display: flex;
+    color: #4e342e;
+    font-size: 20px;
+  }
+  
+  #timer {
+    position: absolute;
+    top: 130px;
+    left: 1120px;
+    width: 100%;
+    display: flex;
+    color: #4e342e;
+    font-size: 20px;
+  }
+  
+  .jogador {
+    width: 48px;
+    height: 48px;
+    background-image: url("ninja.png");
+    background-size: 144px 48px;
+    background-position: 0px 0px;
+    position: absolute;
+  }
+  
+  div.fixa {
+    width: 1280px;
+    height: 720px;
+    position: relative;
+  }
+  
+  div.chao {
+    width: 1500px;
+    height: 70px;
+    background-color: #8d6e63;
+    position: absolute;
+    top: 650px;
+    left: -110px;
+  }
+  
+  div.teto {
+    position: absolute;
+    top: 20px;
+    left: -110px;
+    width: 1500px;
+    height: 70px;
+    background-color: #8d6e63;
+  }
+  .paredeesq, .parededir{
+    position: absolute;
+    top:20px;
+    height:700px;
+    width: 10px;
+  }
+  .paredeesq{
+    left:-110px;
+  }
+  .parededir{
+    left:1380px;
+  }
+  div.plataforma,
+  div.plataforma2 {
+    position: absolute;
+    height: 60px;
+    width: 520px;
+    background-color: #8d6e63;
+    top: 330px;
+    border-radius: 10px;
+  }
+  
+  div.plataforma {
+    left: 845px;
+  }
+  
+  div.plataforma2 {
+    left: -85px;
+  }
+  
+  div.camada1 {
+    width: 384px;
+    height: 85px;
+    background-color: #8d6e63;
+    position: absolute;
+    top: 570px;
+    border-radius: 5px;
+    left: 448px;
+  }
+  
+  div.camada2 {
+    width: 256px;
+    height: 85px;
+    background-color: #8d6e63;
+    position: absolute;
+    top: 490px;
+    border-radius: 5px;
+    left: 512px;
+  }
+  
+  div.camada3 {
+    width: 128px;
+    height: 85px;
+    background-color: #8d6e63;
+    position: absolute;
+    top: 410px;
+    border-radius: 5px;
+    left: 576px;
+  }
+  
+  .moeda1, .moeda2, .moeda3, .moeda4, .moeda5, .moeda6, .moeda7,
+  .moeda8, .moeda9, .moeda10, .moeda11, .moeda12, .moeda13,
+  .moeda14, .moeda15, .moeda16, .moeda17, .moeda18, .moeda19, .moeda20 {
+    width: 60px;
+    position: absolute;
+  }
+  
+  .moeda1 { top: 540px; }
+  .moeda2 { top: 540px; left: 140px; }
+  .moeda3 { top: 540px; left: 280px; }
+  .moeda4 { top: 520px; left: 450px; }
+  .moeda5 { top: 440px; left: 515px; }
+  .moeda6 { top: 440px; left: 705px; }
+  .moeda7 { top: 520px; left: 770px; }
+  .moeda8 { top: 540px; left: 900px; }
+  .moeda9 { top: 540px; left: 1040px; }
+  .moeda10 { top: 540px; left: 1180px; }
+  .moeda11 { top: 240px; }
+  .moeda12 { top: 240px; left: 140px; }
+  .moeda13 { top: 240px; left: 280px; }
+  .moeda14 { top: 240px; left: 900px; }
+  .moeda15 { top: 240px; left: 1040px; }
+  .moeda16 { top: 240px; left: 1180px; }
+  .moeda17 { top: 174px; left: 67px; }
+  .moeda18 { top: 174px; left: 211px; }
+  .moeda19 { top: 174px; left: 968px; }
+  .moeda20 { top: 174px; left: 1113px; }
+  
+  .porta {
+    width: 175px;
+    position: absolute;
+    top: 237px;
+    left: 550px;
+  }
+  
+  .porta.trancada {
+    opacity: 0.5;
+    filter: grayscale(100%);
+  }
+  
+  
+  .porta.trancada {
+    opacity: 0.5;
+    filter: grayscale(100%);
+  }
